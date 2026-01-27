@@ -25,49 +25,6 @@ GPIOA_OTYPER &= ~(1 << 2);        // set the input mode to the push pull state a
 
 }
 
-void set_gpio_pin(){
-    GPIOA_BSRR = (1 << 3);     // to turn on the led 
-}
-
-void reset_gpio_pin(){
-     GPIOA_BSRR = (1 << (3 + 16));      // to turn off the led 
-
-}
-
-uint32_t gpio_read_pin(void)
-{
-    uint32_t value = GPIOA_IDR;
-    return (value & (1 << 2)) ? 1 : 0;
-}
-
-
-#include "gpio_hw.h"
-#include <stdint.h>
-
-void gpio_init(void) {
-    // Enable GPIOA clock on AHB1
-    RCC_AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
-
-    // Configure PA3 as output (General Purpose Output)
-    GPIOA_MODER &= ~(0b11 << 6);      // Clear PA3 MODER bits [7:6]
-    GPIOA_MODER |= (0b01 << 6);       // Set PA3 to output mode (01)
-
-    // Configure PA2 as input (default, already 00 after reset)
-    GPIOA_MODER &= ~(0b11 << 4);      // Clear PA2 MODER bits [5:4]
-    GPIOA_MODER |= (0b00 << 4);       // Set PA2 to input mode (00)
-
-    // PA3: Push-pull output type (default at reset, but explicit)
-    GPIOA_OTYPER &= ~(1 << 3);        // Push-pull for PA3
-
-    // PA3: Medium speed output
-    GPIOA_OSPEEDR &= ~(0b11 << 6);    // Clear PA3 OSPEEDR bits
-    GPIOA_OSPEEDR |= (0b01 << 6);     // Medium speed (01)
-
-    // PA2: No pull-up/pull-down (default for input button)
-    GPIOA_PUPDR &= ~(0b11 << 4);      // Clear PA2 PUPDR bits
-    GPIOA_PUPDR |= (0b00 << 4);       // No pull (00)
-}
-
 void set_gpio_pin(void) {
     GPIOA_BSRR = (1 << 3);            // Set PA3 high (LED on)
 }
