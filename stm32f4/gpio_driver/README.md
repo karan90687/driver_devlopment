@@ -28,7 +28,18 @@ A simple, bare-metal GPIO driver for STM32F4 series microcontrollers, written in
 - `gpio.c`: Implementation of the driver logic.
 
 ## Usage
+### Hardware Setup
 
+- **PA3**: Output connected to LED
+  - `set_gpio_pin()` → PA3 = HIGH → LED ON
+  - `reset_gpio_pin()` → PA3 = LOW → LED OFF
+
+- **PA2**: Input connected to Button with **external pull-down resistor** (10kΩ to GND)
+  - Button NOT pressed → PA2 = HIGH (logic 1)
+  - Button pressed → PA2 = LOW (logic 0)
+ 
+ ---
+### main.c 
 1. Include the header file in your main application:
     ```c
     #include "gpio.h"
@@ -39,14 +50,17 @@ A simple, bare-metal GPIO driver for STM32F4 series microcontrollers, written in
     ```
 3. Control the pins:
     ```c
-    // Turn on user LED (PA3)
-    set_gpio_pin();
-
-    // Read button state (PA2)
-    if (gpio_read_pin()) {
-        // Button pressed
+    while(1) {
+        if (!gpio_read_pin()) {  // Button pressed (PA2 pulled LOW)
+            set_gpio_pin();      // Turn on LED (PA3)
+        } else {
+            reset_gpio_pin();    // Turn off LED (PA3)
+        }
     }
-    ```
+
+## Power Efficiency
+
+This design uses **external pull-down resistor** instead of internal pull-up to minimize power consumption. The pin only draws current when the button is actively pressed, not in idle state.
 
 ## License
 
