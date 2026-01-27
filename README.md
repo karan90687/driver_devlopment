@@ -1,4 +1,4 @@
-# MCU Drivers (Low-Level Learning Repository)
+# Driver devlopment (Low-Level Learning Repository)
 
 This repository contains **low-level peripheral drivers** written from scratch for learning embedded systems **at the register level**.
 
