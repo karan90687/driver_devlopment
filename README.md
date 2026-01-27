@@ -128,7 +128,7 @@ See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## ✍️ Author
+## ✍️ Author :
 
 **Karan Rajput**  
 Embedded Systems & Low-Level Driver Learning
