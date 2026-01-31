@@ -1,18 +1,52 @@
-# STM32F4 GPIO Driver
+# STM32F4 GPIO Driver (Register-Level)
 
-A simple, bare-metal GPIO driver for STM32F4 series microcontrollers, written in C. This project demonstrates direct register manipulation for GPIO configuration and control without relying on HAL or Standard Peripheral Libraries.
+A **bare-metal, register-level GPIO driver** for STM32F4 series microcontrollers, written in C.  
+This project focuses on **understanding GPIO hardware deeply** by using the STM32 reference manual directly — **no HAL, no StdPeriph, no SDK abstractions**.
 
-## Features
+The driver is **configurable**: the user selects the **GPIO port and pin at runtime**.
 
-- **Bare Metal Implementation**: Direct access to hardware registers for maximum efficiency and understanding of the hardware.
-- **GPIO Configuration**:
-  - Configures **GPIOA Pin 3** as an **Output** (Push-Pull, Medium Speed).
-  - Configures **GPIOA Pin 2** as an **Input** (No Pull-up/Pull-down).
-- **Control Functions**:
-  - `gpio_init()`: Initializes the GPIO peripheral and pin modes.
-  - `set_gpio_pin()`: Sets GPIOA Pin 3 High.
-  - `reset_gpio_pin()`: Sets GPIOA Pin 3 Low.
-  - `gpio_read_pin()`: Reads the state of GPIOA Pin 2.
+---
+
+## 🎯 Purpose
+
+- Learn how GPIO works at the **register level**
+- Understand **clock enable, bit fields, and register layout**
+- Write drivers using **professional CMSIS-style struct mapping**
+- Build strong foundations before using HAL or RTOS
+
+---
+
+## ✨ Features
+
+- **Bare-metal implementation**
+- **Struct-based register mapping** (`GPIO_RegDef_t`)
+- **Configurable GPIO port and pin**
+- Safe GPIO output control using **BSRR**
+- Input reading via **IDR**
+- Clean separation of:
+  - Hardware description (`gpio_hw.h`)
+  - Driver logic (`gpio.c`)
+  - Public API (`gpio.h`)
+
+---
+
+## 🧩 Driver Capabilities
+
+### GPIO Configuration
+- Configure any GPIO pin as:
+  - Input
+  - Output (push-pull)
+- Configure:
+  - Mode
+  - Output speed
+  - Pull-up / pull-down
+
+### GPIO Control
+- Set GPIO pin HIGH
+- Set GPIO pin LOW
+- Read GPIO pin state
+
+---
 
 ## Hardware Support
 
@@ -39,24 +73,30 @@ A simple, bare-metal GPIO driver for STM32F4 series microcontrollers, written in
   - Button pressed → PA2 = LOW (logic 0)
  
  ---
-### main.c 
-1. Include the header file in your main application:
+ ## Usage 
+
+### main.c
     ```c
     #include "gpio.h"
-    ```
-2. Initialize the GPIO driver:
-    ```c
-    gpio_init();
-    ```
-3. Control the pins:
-    ```c
-    while(1) {
-        if (!gpio_read_pin()) {  // Button pressed (PA2 pulled LOW)
-            set_gpio_pin();      // Turn on LED (PA3)
-        } else {
-            reset_gpio_pin();    // Turn off LED (PA3)
+
+    int main(void)
+    {
+        // PA3 as output (LED)
+        gpio_init(GPIOA, 3, GPIO_MODE_OUTPUT);
+
+        // PA2 as input (Button)
+        gpio_init(GPIOA, 2, GPIO_MODE_INPUT);
+
+        while (1)
+        {
+            if (!gpio_read(GPIOA, 2)) {
+                gpio_write(GPIOA, 3, 1);   // LED ON
+            } else {
+                gpio_write(GPIOA, 3, 0);   // LED OFF
+            }
         }
     }
+    ```
 
 ## Power Efficiency
 

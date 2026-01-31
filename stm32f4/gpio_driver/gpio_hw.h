@@ -26,12 +26,38 @@
 #define RCC_AHB1ENR_GPIOGEN (1 << 6)
 #define RCC_AHB1ENR_GPIOHEN (1 << 7)
 
-
 // clock enable register for GPIO ports name RCC_AHB1ENR
 #define RCC_AHB1ENR (*(volatile uint32_t *)(RCC_PERIPH_BASE + 0x30))
-#define GPIOA_MODER (*(volatile uint32_t *)(GPIOA_BASE + 0x00))
-#define GPIOA_OTYPER (*(volatile uint32_t *)(GPIOA_BASE + 0x04))
-#define GPIOA_OSPEEDR (*(volatile uint32_t *)(GPIOA_BASE + 0x08))
-#define GPIOA_PUPDR (*(volatile uint32_t *)(GPIOA_BASE + 0x0C))
-#define GPIOA_BSRR (*(volatile uint32_t *)(GPIOA_BASE + 0x18))
-#define GPIOA_IDR (*(volatile uint32_t *)(GPIOA_BASE + 0x10))
+
+
+/* 
+ * GPIO_RegDef_t defines the register layout.
+ * Base address is cast to this struct.
+ * Member order = register offsets (computed by compiler).
+ * What happens when you write GPIOA->MODER
+ * address = GPIOA_BASE + offset_of(MODER)
+ * GPIOA is a pointer to GPIO_RegDef_t struct at address 0x40020000
+ */
+// GPIO register definition structure
+#define GPIOA ((GPIO_RegDef_t *) GPIOA_BASE)
+#define GPIOB ((GPIO_RegDef_t *) GPIOB_BASE)
+#define GPIOC ((GPIO_RegDef_t *) GPIOC_BASE)
+#define GPIOD ((GPIO_RegDef_t *) GPIOD_BASE)
+#define GPIOE ((GPIO_RegDef_t *) GPIOE_BASE)
+#define GPIOF ((GPIO_RegDef_t *) GPIOF_BASE)
+#define GPIOG ((GPIO_RegDef_t *) GPIOG_BASE)
+#define GPIOH ((GPIO_RegDef_t *) GPIOH_BASE)
+
+typedef struct {
+	volatile uint32_t MODER  ;	// gpio mode register at 				0x00
+	volatile uint32_t OTYPER ;	// gpio output type register at 		0x04
+	volatile uint32_t OSPEEDR;	// gpio output speed register at 		0x08
+	volatile uint32_t PUPDR	 ;	// gpio pull up pull down register at 	0x0c
+	volatile uint32_t IDR	 ;	// gpio input data register at 			0x10
+	volatile uint32_t ODR	 ;	// gpio output data register at 		0x14
+	volatile uint32_t BSRR	 ;	// gpio bit set reset regisetr at 		0x18
+	volatile uint32_t LCKR	 ;	// gpio lock register at 				0x1c
+	volatile uint32_t AFR[2] ;	/* gpio alternate function high and
+								   low register at 						0x20 and
+																		0x24*/
+}GPIO_RegDef_t;

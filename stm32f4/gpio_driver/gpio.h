@@ -3,9 +3,8 @@
 
 #include <stdint.h>
 
-void gpio_init(void);
-void set_gpio_pin(void);
-void reset_gpio_pin(void);
-uint32_t gpio_read_pin(void);
+void gpio_init(GPIO_RegDef_t *port, uint8_t pin, uint8_t mode);
+void gpio_write(GPIO_RegDef_t *port, uint8_t pin, uint8_t value);
+uint8_t gpio_read(GPIO_RegDef_t *port, uint8_t pin);
 
 #endif
