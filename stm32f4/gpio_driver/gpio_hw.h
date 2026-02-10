@@ -1,5 +1,8 @@
+#ifndef GPIO_HW_H
+#define GPIO_HW_H
+
+
 #include <stdint.h>
-#include <stdio.h>
 
 // Base address are found in the memory map of the board in reference manual 
 #define AHB1_PERIPH_BASE 0x40020000
@@ -38,17 +41,8 @@
  * address = GPIOA_BASE + offset_of(MODER)
  * GPIOA is a pointer to GPIO_RegDef_t struct at address 0x40020000
  */
-// GPIO register definition structure
-#define GPIOA ((GPIO_RegDef_t *) GPIOA_BASE)
-#define GPIOB ((GPIO_RegDef_t *) GPIOB_BASE)
-#define GPIOC ((GPIO_RegDef_t *) GPIOC_BASE)
-#define GPIOD ((GPIO_RegDef_t *) GPIOD_BASE)
-#define GPIOE ((GPIO_RegDef_t *) GPIOE_BASE)
-#define GPIOF ((GPIO_RegDef_t *) GPIOF_BASE)
-#define GPIOG ((GPIO_RegDef_t *) GPIOG_BASE)
-#define GPIOH ((GPIO_RegDef_t *) GPIOH_BASE)
 
-typedef struct {
+ typedef struct {
 	volatile uint32_t MODER  ;	// gpio mode register at 				0x00
 	volatile uint32_t OTYPER ;	// gpio output type register at 		0x04
 	volatile uint32_t OSPEEDR;	// gpio output speed register at 		0x08
@@ -61,3 +55,18 @@ typedef struct {
 								   low register at 						0x20 and
 																		0x24*/
 }GPIO_RegDef_t;
+
+
+// GPIO register definition structure
+#define GPIOA ((GPIO_RegDef_t *) GPIOA_BASE)
+#define GPIOB ((GPIO_RegDef_t *) GPIOB_BASE)
+#define GPIOC ((GPIO_RegDef_t *) GPIOC_BASE)
+#define GPIOD ((GPIO_RegDef_t *) GPIOD_BASE)
+#define GPIOE ((GPIO_RegDef_t *) GPIOE_BASE)
+#define GPIOF ((GPIO_RegDef_t *) GPIOF_BASE)
+#define GPIOG ((GPIO_RegDef_t *) GPIOG_BASE)
+#define GPIOH ((GPIO_RegDef_t *) GPIOH_BASE)
+
+
+
+#endif
