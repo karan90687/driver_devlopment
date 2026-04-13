@@ -174,10 +174,3 @@ Default boot profile produced by `max30102_init()`: SpO₂ mode, 100 Hz sample r
 
 ---
 
-## 7. Limitations & TODO
-
-- No I²C bus installation inside the driver — caller must set up `I2C_NUM_0` first.
-- No interrupt support (A_FULL / PPG_RDY); sampling is poll-based.
-- `filter_init` / `filter_update` need prototypes in the header to be used outside this file.
-- No BPM / SpO₂ computation yet — `max30102_read_sample()` returns raw ADC counts only.
-- Configuration values are hard-coded inside `max30102_init()`; there is no runtime config struct.
